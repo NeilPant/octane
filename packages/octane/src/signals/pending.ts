@@ -208,7 +208,7 @@ function fork(slot: PendingSlot): ScopedNode {
 				const forkBinding = binding.forkCandidate ?? candidateHooks.derived;
 				if (!forkBinding) throw new CandidateUnsupportedError(formatClientError(136));
 				slot.producer = forkBinding.call(binding as DerivedBinding<unknown>, shadow, slot);
-			} else shadow.compute = node.compute;
+			} else graph.forkDerivedCompute(shadow, node);
 		}
 	} catch (error) {
 		release(slot, false);

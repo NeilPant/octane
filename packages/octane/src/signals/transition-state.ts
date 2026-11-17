@@ -43,6 +43,7 @@ interface GraphBridge {
 	attachObserver(node: ScopedNode, notify: () => void, native: boolean): () => void;
 	declarationViewFork(node: ScopedNode): DeclarationViewFork | undefined;
 	isDeclarationView(node: unknown): boolean;
+	forkDerivedCompute(shadow: ScopedNode, node: ScopedNode): void;
 }
 
 export let graphBridge: GraphBridge;

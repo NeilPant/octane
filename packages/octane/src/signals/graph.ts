@@ -1698,6 +1698,12 @@ function thrownState(node: ScopedNode, error: unknown): NodeState {
 
 const NO_FAILURE: unknown = {};
 
+/** The raw compute and equals behind a keyed derived's `computeEqual` wrapper. */
+const derivedEqualsData = new WeakMap<
+	Function,
+	{ compute: () => unknown; equals: SignalEquals<unknown> }
+>();
+
 /**
  * `compute`, returning the derived node's previous value instead of a result
  * `equals` finds equal to it, so the node keeps that reference and its plain
@@ -1712,7 +1718,7 @@ export function computeEqual<T>(
 	// A keyless node holds its value or error in `last`; until its first result,
 	// and from a failure until its next, `last` is NO_FAILURE.
 	if (node instanceof PlainComputed) node.last = NO_FAILURE;
-	return () => {
+	const fn = () => {
 		const next = compute();
 		const previous = node instanceof PlainComputed ? node.last : readyValueOf(node);
 		return previous !== NO_FAILURE &&
@@ -1721,6 +1727,24 @@ export function computeEqual<T>(
 			? (previous as T)
 			: next;
 	};
+	if (!(node instanceof PlainComputed))
+		derivedEqualsData.set(fn, { compute, equals: equals as SignalEquals<unknown> });
+	return fn;
+}
+
+/**
+ * Set up `shadow.compute` from the committed `node`, retargeting the `equals`
+ * wrapper when the derived uses one so the shadow compares against its own
+ * pending value rather than the committed node's.
+ */
+export function forkDerivedCompute(shadow: ScopedNode, node: ScopedNode): void {
+	const data = node.plain !== undefined ? derivedEqualsData.get(node.plain) : undefined;
+	if (data) {
+		const read = computeEqual(shadow, data.compute as () => any, data.equals as SignalEquals<any>);
+		shadow.compute = (target) => derivedState(target, read);
+	} else {
+		shadow.compute = node.compute;
+	}
 }
 
 /** A keyed node's ready value, or NO_FAILURE when it has none. */
@@ -3080,6 +3104,7 @@ registerGraphBridge({
 	attachObserver,
 	declarationViewFork,
 	isDeclarationView,
+	forkDerivedCompute,
 });
 
 // Renderer transitions keep signal writes pending, including writes to signals
