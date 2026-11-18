@@ -1,5 +1,17 @@
 # octane
 
+## 0.21.0
+
+### Minor Changes
+
+- 5faf206: Octane Data: a read's `tags` and a write's `invalidates` can be computed from the input, such as ``tags: (id) => [`project:${id}`]``, so an invalidation reaches only the reads for that input. Static lists work as before.
+
+### Patch Changes
+
+- 249dce4: Keep an imported custom hook's state and context reads when it is imported under an ordinary local name, such as `import { useReading as readValue }`.
+- e50b52b: Fix a crash when an exported or escaped `memo` component written with `@{ … }` switches between its template and an early `return null`.
+- 643f476: Mount a component that renders itself through the same lite component scope as a call from another component. Since the lexical tag-shadowing fix (#2858), a recursive call was treated as a shadowed local tag and mounted through the full component path, which made nested trees about 30% slower to mount.
+
 ## 0.20.0
 
 ### Minor Changes

@@ -1,5 +1,17 @@
 # @octanejs/dnd-kit-core
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [5faf206]
+- Updated dependencies [249dce4]
+- Updated dependencies [e50b52b]
+- Updated dependencies [643f476]
+  - octane@0.21.0
+  - @octanejs/dnd-kit-accessibility@0.0.6
+  - @octanejs/dnd-kit-utilities@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

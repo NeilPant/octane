@@ -1,5 +1,16 @@
 # @octanejs/email-cli
 
+## 0.0.24
+
+### Patch Changes
+
+- Updated dependencies [5faf206]
+- Updated dependencies [249dce4]
+- Updated dependencies [e50b52b]
+- Updated dependencies [643f476]
+  - octane@0.21.0
+  - @octanejs/email@0.0.24
+
 ## 0.0.23
 
 ### Patch Changes

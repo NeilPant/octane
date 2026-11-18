@@ -1,5 +1,16 @@
 # @octanejs/codemod
 
+## 0.2.7
+
+### Patch Changes
+
+- def6e02: Enable the React Intl and scoped-store migration adapters when the project uses Octane 0.21.
+- Updated dependencies [5faf206]
+- Updated dependencies [249dce4]
+- Updated dependencies [e50b52b]
+- Updated dependencies [643f476]
+  - octane@0.21.0
+
 ## 0.2.6
 
 ### Patch Changes
